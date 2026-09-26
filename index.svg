@@ -1,65 +1,448 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <svg xmlns="http://www.w3.org/2000/svg"
      xmlns:xhtml="http://www.w3.org/1999/xhtml"
      width="100%"
      height="100%"
-     viewBox="0 0 900 600">
+     viewBox="0 0 1600 900"
+     preserveAspectRatio="none">
 
-  <rect width="900" height="600" fill="#111111"/>
+  <rect width="1600" height="900" fill="#0b0b0f"/>
 
-  <text x="450"
-        y="140"
-        text-anchor="middle"
+  <!-- TOP BAR -->
+  <rect x="0" y="0" width="1600" height="82" fill="#15151c"/>
+
+  <!-- Logo -->
+  <text x="35" y="50"
         fill="white"
         font-family="Arial"
-        font-size="48">
-    My Proxy
+        font-size="27"
+        font-weight="bold">
+    Proxy
   </text>
 
-  <foreignObject x="150" y="220" width="600" height="60">
+  <!-- Back -->
+  <rect x="145" y="20" width="42" height="42" rx="10"
+        fill="#24242d" onclick="back()"/>
+  <text x="166" y="49"
+        text-anchor="middle"
+        fill="white"
+        font-size="25"
+        pointer-events="none">‹</text>
+
+  <!-- Forward -->
+  <rect x="195" y="20" width="42" height="42" rx="10"
+        fill="#24242d" onclick="forward()"/>
+  <text x="216" y="49"
+        text-anchor="middle"
+        fill="white"
+        font-size="25"
+        pointer-events="none">›</text>
+
+  <!-- Reset -->
+  <rect x="245" y="20" width="42" height="42" rx="10"
+        fill="#24242d" onclick="resetPage()"/>
+  <text x="266" y="49"
+        text-anchor="middle"
+        fill="white"
+        font-size="22"
+        pointer-events="none">↻</text>
+
+  <!-- Address bar -->
+  <rect x="305" y="17"
+        width="850"
+        height="48"
+        rx="24"
+        fill="#24242d"/>
+
+  <foreignObject x="325" y="21" width="810" height="40">
     <xhtml:input
-      id="url"
-      placeholder="Enter URL"
+      id="address"
+      value=""
+      placeholder="Enter a URL..."
+      onkeydown="addressKey(event)"
       style="
-        width:600px;
-        height:60px;
+        width:100%;
+        height:40px;
         box-sizing:border-box;
-        padding:15px;
-        font-size:20px;
-        background:#222;
+        background:transparent;
+        border:0;
+        outline:0;
         color:white;
-        border:1px solid #555;
-        border-radius:10px;
+        font-family:Arial;
+        font-size:17px;
       "/>
   </foreignObject>
 
-  <rect x="350"
-        y="320"
-        width="200"
-        height="60"
-        rx="10"
-        fill="#444"
-        onclick="go()"/>
-
-  <text x="450"
-        y="358"
+  <!-- Fullscreen -->
+  <rect x="1170" y="20" width="42" height="42" rx="10"
+        fill="#24242d" onclick="fullscreen()"/>
+  <text x="1191" y="49"
         text-anchor="middle"
         fill="white"
-        font-family="Arial"
+        font-size="19"
+        pointer-events="none">⛶</text>
+
+  <!-- Menu -->
+  <rect x="1220" y="20" width="42" height="42" rx="10"
+        fill="#24242d" onclick="toggleMenu()"/>
+  <text x="1241" y="49"
+        text-anchor="middle"
+        fill="white"
         font-size="22"
-        pointer-events="none">
-    GO
+        pointer-events="none">☰</text>
+
+  <!-- TAB BAR -->
+  <rect x="0" y="82" width="1600" height="48" fill="#101016"/>
+
+  <rect x="20" y="89"
+        width="230"
+        height="35"
+        rx="9"
+        fill="#24242d"/>
+
+  <text x="38" y="112"
+        fill="white"
+        font-family="Arial"
+        font-size="14">
+    New Tab
   </text>
 
-  <script>
-    function go() {
-      const input = document.getElementById("url");
+  <text x="225" y="112"
+        fill="#aaa"
+        font-family="Arial"
+        font-size="18">
+    ×
+  </text>
 
-      if (!input || !input.value) return;
+  <!-- HOME SCREEN -->
+  <g id="home">
 
-      window.location.href =
-        "/proxy?url=" + encodeURIComponent(input.value);
+    <text x="800" y="290"
+          text-anchor="middle"
+          fill="white"
+          font-family="Arial"
+          font-size="58"
+          font-weight="bold">
+      Proxy
+    </text>
+
+    <text x="800" y="335"
+          text-anchor="middle"
+          fill="#999"
+          font-family="Arial"
+          font-size="20">
+      Enter a website above to get started
+    </text>
+
+    <!-- Search box -->
+    <rect x="450" y="385"
+          width="700"
+          height="64"
+          rx="32"
+          fill="#191920"
+          stroke="#30303a"/>
+
+    <foreignObject x="475" y="395" width="650" height="45">
+      <xhtml:input
+        id="homeAddress"
+        placeholder="https://example.com"
+        onkeydown="homeKey(event)"
+        style="
+          width:100%;
+          height:45px;
+          box-sizing:border-box;
+          background:transparent;
+          border:0;
+          outline:0;
+          color:white;
+          font-size:18px;
+          font-family:Arial;
+        "/>
+    </foreignObject>
+
+    <rect x="690" y="475"
+          width="220"
+          height="52"
+          rx="26"
+          fill="#30303a"
+          onclick="openHome()"/>
+
+    <text x="800" y="508"
+          text-anchor="middle"
+          fill="white"
+          font-family="Arial"
+          font-size="18"
+          pointer-events="none">
+      Open Website
+    </text>
+
+  </g>
+
+  <!-- BROWSER CONTENT -->
+  <foreignObject id="browser"
+                  x="0" y="130"
+                  width="1600"
+                  height="770"
+                  visibility="hidden">
+
+    <xhtml:iframe
+      id="frame"
+      style="
+        width:100%;
+        height:100%;
+        border:0;
+        background:white;
+      ">
+    </xhtml:iframe>
+
+  </foreignObject>
+
+  <!-- MENU -->
+  <g id="menu" visibility="hidden">
+
+    <rect x="1260" y="75"
+          width="300"
+          height="270"
+          rx="15"
+          fill="#1b1b23"
+          stroke="#33333d"/>
+
+    <text x="1290" y="115"
+          fill="white"
+          font-family="Arial"
+          font-size="21"
+          font-weight="bold">
+      Menu
+    </text>
+
+    <text x="1290" y="160"
+          fill="#ddd"
+          font-family="Arial"
+          font-size="17"
+          onclick="resetPage()">
+      Reset page
+    </text>
+
+    <text x="1290" y="205"
+          fill="#ddd"
+          font-family="Arial"
+          font-size="17"
+          onclick="fullscreen()">
+      Fullscreen
+    </text>
+
+    <text x="1290" y="250"
+          fill="#ddd"
+          font-family="Arial"
+          font-size="17"
+          onclick="newTab()">
+      New tab
+    </text>
+
+    <text x="1290" y="295"
+          fill="#aaa"
+          font-family="Arial"
+          font-size="15">
+      Proxy interface
+    </text>
+
+  </g>
+
+  <script><![CDATA[
+
+    /*
+      IMPORTANT:
+      Replace this with the URL where your Node.js proxy is running.
+
+      Example:
+      const PROXY_SERVER = "https://my-proxy.example.com";
+    */
+
+    const PROXY_SERVER = "https://YOUR_PROXY_SERVER";
+
+    let currentURL = "";
+    let historyList = [];
+    let historyIndex = -1;
+
+    function normalizeURL(value) {
+      value = value.trim();
+
+      if (!value) return "";
+
+      if (!/^https?:\/\//i.test(value)) {
+        value = "https://" + value;
+      }
+
+      return value;
     }
-  </script>
+
+    function openURL(value) {
+
+      const url = normalizeURL(value);
+
+      if (!url) return;
+
+      currentURL = url;
+
+      historyList =
+        historyList.slice(0, historyIndex + 1);
+
+      historyList.push(url);
+      historyIndex++;
+
+      document.getElementById("address").value = url;
+
+      const proxyURL =
+        PROXY_SERVER +
+        "/proxy?url=" +
+        encodeURIComponent(url);
+
+      document.getElementById("home").setAttribute(
+        "visibility",
+        "hidden"
+      );
+
+      document.getElementById("browser").setAttribute(
+        "visibility",
+        "visible"
+      );
+
+      document.getElementById("frame").setAttribute(
+        "src",
+        proxyURL
+      );
+    }
+
+    function openHome() {
+      const value =
+        document.getElementById("homeAddress").value;
+
+      openURL(value);
+    }
+
+    function addressKey(event) {
+      if (event.key === "Enter") {
+        openURL(
+          document.getElementById("address").value
+        );
+      }
+    }
+
+    function homeKey(event) {
+      if (event.key === "Enter") {
+        openHome();
+      }
+    }
+
+    function back() {
+
+      if (historyIndex <= 0) return;
+
+      historyIndex--;
+
+      const url = historyList[historyIndex];
+
+      currentURL = url;
+
+      document.getElementById("address").value = url;
+
+      document.getElementById("frame").setAttribute(
+        "src",
+        PROXY_SERVER +
+        "/proxy?url=" +
+        encodeURIComponent(url)
+      );
+    }
+
+    function forward() {
+
+      if (historyIndex >= historyList.length - 1) return;
+
+      historyIndex++;
+
+      const url = historyList[historyIndex];
+
+      currentURL = url;
+
+      document.getElementById("address").value = url;
+
+      document.getElementById("frame").setAttribute(
+        "src",
+        PROXY_SERVER +
+        "/proxy?url=" +
+        encodeURIComponent(url)
+      );
+    }
+
+    function resetPage() {
+
+      currentURL = "";
+      historyList = [];
+      historyIndex = -1;
+
+      document.getElementById("address").value = "";
+      document.getElementById("homeAddress").value = "";
+
+      document.getElementById("frame").setAttribute(
+        "src",
+        "about:blank"
+      );
+
+      document.getElementById("browser").setAttribute(
+        "visibility",
+        "hidden"
+      );
+
+      document.getElementById("home").setAttribute(
+        "visibility",
+        "visible"
+      );
+
+      toggleMenu(false);
+    }
+
+    function fullscreen() {
+
+      const svg = document.documentElement;
+
+      if (!document.fullscreenElement) {
+
+        if (svg.requestFullscreen) {
+          svg.requestFullscreen();
+        }
+
+      } else {
+
+        document.exitFullscreen();
+      }
+    }
+
+    function toggleMenu(force) {
+
+      const menu =
+        document.getElementById("menu");
+
+      if (force === false) {
+        menu.setAttribute("visibility", "hidden");
+        return;
+      }
+
+      const current =
+        menu.getAttribute("visibility");
+
+      menu.setAttribute(
+        "visibility",
+        current === "visible"
+          ? "hidden"
+          : "visible"
+      );
+    }
+
+    function newTab() {
+      resetPage();
+    }
+
+  ]]></script>
 
 </svg>
