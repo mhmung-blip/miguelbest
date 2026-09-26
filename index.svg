@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xhtml="http://www.w3.org/1999/xhtml"
+     width="100%"
+     height="100%"
+     viewBox="0 0 900 600">
+
+  <rect width="900" height="600" fill="#111111"/>
+
+  <text x="450"
+        y="140"
+        text-anchor="middle"
+        fill="white"
+        font-family="Arial"
+        font-size="48">
+    My Proxy
+  </text>
+
+  <foreignObject x="150" y="220" width="600" height="60">
+    <xhtml:input
+      id="url"
+      placeholder="Enter URL"
+      style="
+        width:600px;
+        height:60px;
+        box-sizing:border-box;
+        padding:15px;
+        font-size:20px;
+        background:#222;
+        color:white;
+        border:1px solid #555;
+        border-radius:10px;
+      "/>
+  </foreignObject>
+
+  <rect x="350"
+        y="320"
+        width="200"
+        height="60"
+        rx="10"
+        fill="#444"
+        onclick="go()"/>
+
+  <text x="450"
+        y="358"
+        text-anchor="middle"
+        fill="white"
+        font-family="Arial"
+        font-size="22"
+        pointer-events="none">
+    GO
+  </text>
+
+  <script>
+    function go() {
+      const input = document.getElementById("url");
+
+      if (!input || !input.value) return;
+
+      window.location.href =
+        "/proxy?url=" + encodeURIComponent(input.value);
+    }
+  </script>
+
+</svg>
